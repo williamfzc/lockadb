@@ -18,9 +18,11 @@ lockable android debug bridge, for managing devices precisely and safely
 
 ## 设计
 
-提供两种形式的用法：
+使用C/S架构，S端启动常驻服务器用于设备的管理，通过API提供给C端使用。
 
-- CLI
+提供两种形式的CLI用法：
+
+- 命令行CLI
 - python API
 
 ### 基本功能
