@@ -108,5 +108,7 @@ def release_device(device_id: str):
     DeviceManager.release(device_id)
     return all_devices()
 
-# start server with:
-#   uvicorn server:app --reload
+
+if __name__ == '__main__':
+    import os
+    os.system('uvicorn lockadb.server:app')

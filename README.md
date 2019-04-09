@@ -35,6 +35,20 @@ lockable android debug bridge, for managing devices precisely and safely
 
 ladb的最终目的是实现类似docker的设备沙盒（当然只是语法层面），让每个应用只能够接触到他当前可以接触的设备，以避免发生冲突。
 
+## 使用
+
+### 安装
+
+```bash
+pip install lockadb
+```
+
+### 启动服务端
+
+```bash
+python -m lockadb.server
+```
+
 ## 协议
 
 [MIT](LICENSE)
