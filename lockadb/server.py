@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from whenconnect import when_connect, when_disconnect
 from loguru import logger
 
+import os
+from lockadb.config import SERVER_PORT
+
 
 class Device(object):
     class DeviceStatus(object):
@@ -110,5 +113,4 @@ def release_device(device_id: str):
 
 
 if __name__ == '__main__':
-    import os
-    os.system('uvicorn lockadb.server:app')
+    os.system('uvicorn lockadb.server:app --port {}'.format(SERVER_PORT))

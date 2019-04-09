@@ -13,5 +13,6 @@ setup(
         'fastapi',
         'whenconnect',
         'loguru',
+        'requests',
     ]
 )
