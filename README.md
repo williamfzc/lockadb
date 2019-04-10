@@ -4,11 +4,13 @@
 
 lockable android debug bridge, for managing devices precisely and safely
 
-维持adb的所有功能的情况下，增加全局的设备管理特性，成为adb的严格超集。
+维持adb的所有功能的情况下，增加全局的设备锁。
 
 ## 使用
 
 ### 安装
+
+python3+
 
 ```bash
 pip install lockadb
@@ -24,7 +26,7 @@ ladb.start-server
 
 在命令行中，直接用 ladb 替代 adb 。
 
-lockadb是一个严格的adb（类似于TypeScript之于JavaScript），理论上所有adb支持的功能都可以无缝切换到ladb。
+lockadb是adb的超集，保留了所有的adb功能。理论上所有adb支持的功能都可以无缝切换到ladb。
 
 ### 防冲突机制
 
