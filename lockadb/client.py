@@ -2,6 +2,7 @@ import requests
 import json
 import subprocess
 import sys
+import os
 import contextlib
 import requests.exceptions
 from lockadb.config import SERVER_URL_PREFIX
@@ -16,9 +17,9 @@ def heartbeat() -> bool:
     return resp.ok
 
 
-def get_devices() -> str:
+def get_devices() -> list:
     request_url = SERVER_URL_PREFIX + '/devices'
-    return json.loads(requests.get(request_url).text)
+    return json.loads(requests.get(request_url).text)['devices']
 
 
 def acquire_device(device_id: str) -> bool:
@@ -52,9 +53,24 @@ class LockAdbRunner(object):
         return True
 
     @classmethod
+    def devices(cls):
+        template = 'List of devices attached' + os.linesep
+        device_list = get_devices()
+
+        for each_device in device_list:
+            each_line = '{}\t{}{}'.format(each_device['device_id'], each_device['status'], os.linesep)
+            template += each_line
+        return template
+
+    @classmethod
     def run(cls, command: list):
         full_command = ['adb'] + command
         if not cls.is_device_specific(full_command):
+            # adb devices
+            if full_command == ['adb', 'devices']:
+                print(cls.devices())
+                return
+
             subprocess.call(full_command, stderr=subprocess.DEVNULL)
             return
 
