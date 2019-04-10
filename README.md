@@ -70,6 +70,25 @@ ladb release 123456F
 
 在你上锁之后，除了主动释放设备，该设备将一直保持在BUSY状态。
 
+### python API
+
+除了命令行的模式，你也可以直接调用python API来管理设备。
+
+```python
+from lockadb.client import LockAdbRunner, acquire_device, release_device
+
+
+DEVICE_ID = '123456F'
+
+acquire_result = acquire_device(DEVICE_ID)
+print('acquire result is: {}'.format(acquire_result))
+LockAdbRunner.run(['devices'])
+
+release_result = release_device(DEVICE_ID)
+print('release result is: {}'.format(release_result))
+LockAdbRunner.run(['devices'])
+```
+
 ## 目标
 
 在全自动化管理中，对于adb的依赖程度是非常高的。然而，一般来说我们将设备管理逻辑放在比较高的层级来解决：
