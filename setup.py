@@ -14,10 +14,12 @@ setup(
         'whenconnect',
         'loguru',
         'requests',
+        'uvicorn',
     ],
     entry_points={
         "console_scripts": [
             "ladb = lockadb.client:main",
+            "ladb.start-server = lockadb.server:main",
         ],
     },
 )

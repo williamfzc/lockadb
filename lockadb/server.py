@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from whenconnect import when_connect, when_disconnect
 from loguru import logger
+import uvicorn
 
-import os
 from lockadb.config import SERVER_PORT
 
 
@@ -112,5 +112,14 @@ def release_device(device_id: str):
     return all_devices()
 
 
+def main():
+    uvicorn.run(
+        app,
+        host="127.0.0.1",
+        port=SERVER_PORT,
+        log_level="info"
+    )
+
+
 if __name__ == '__main__':
-    os.system('uvicorn lockadb.server:app --port {}'.format(SERVER_PORT))
+    main()

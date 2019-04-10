@@ -3,11 +3,17 @@ import json
 import subprocess
 import sys
 import contextlib
+import requests.exceptions
 from lockadb.config import SERVER_URL_PREFIX
 
 
 def heartbeat() -> bool:
-    return requests.get(SERVER_URL_PREFIX).ok
+    try:
+        resp = requests.get(SERVER_URL_PREFIX)
+    except requests.exceptions.ConnectionError:
+        return False
+
+    return resp.ok
 
 
 def get_devices() -> str:
@@ -59,6 +65,11 @@ class LockAdbRunner(object):
 
 
 def main():
+    is_server_online = heartbeat()
+    if not is_server_online:
+        print('ladb offline. Start your ladb server with `ladb.start-server` firstly.')
+        return
+
     command = sys.argv[1:]
     LockAdbRunner.run(command)
 
