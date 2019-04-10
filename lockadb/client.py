@@ -54,6 +54,7 @@ class LockAdbRunner(object):
 
     @classmethod
     def devices(cls):
+        """ wrapper for `adb devices` """
         template = 'List of devices attached' + os.linesep
         device_list = get_devices()
 
@@ -64,13 +65,28 @@ class LockAdbRunner(object):
 
     @classmethod
     def run(cls, command: list):
+        # ladb devices
+        if command == ['devices']:
+            print(cls.devices())
+            return
+
+        # ladb acquire <device_id>
+        if command[0] == 'acquire':
+            assert len(command) == 2, 'syntax error, e.g: `ladb acquire 123456F`.'
+            device_id = command[1]
+            acquire_device(device_id)
+            return
+
+        # ladb release <device_id>
+        if command[0] == 'release':
+            assert len(command) == 2, 'syntax error, e.g: `ladb release 123456F`.'
+            device_id = command[1]
+            release_device(device_id)
+            return
+
+        # normal adb
         full_command = ['adb'] + command
         if not cls.is_device_specific(full_command):
-            # adb devices
-            if full_command == ['adb', 'devices']:
-                print(cls.devices())
-                return
-
             subprocess.call(full_command, stderr=subprocess.DEVNULL)
             return
 
