@@ -14,5 +14,10 @@ setup(
         'whenconnect',
         'loguru',
         'requests',
-    ]
+    ],
+    entry_points={
+        "console_scripts": [
+            "ladb = lockadb.client:main",
+        ],
+    },
 )
