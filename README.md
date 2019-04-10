@@ -46,8 +46,56 @@ pip install lockadb
 ### 启动服务端
 
 ```bash
-python -m lockadb.server
+ladb.start-server
 ```
+
+### 像adb一样操作
+
+在命令行中，直接用 ladb 替代 adb 。
+
+lockadb是一个严格的adb（类似于TypeScript之于JavaScript），理论上所有adb支持的功能都可以无缝切换到ladb。
+
+### 防冲突机制
+
+lockadb最关键的特性就是从adb层面避免了设备操作冲突。
+
+连入一个设备`123456F`，我们先让该设备忙碌20秒：
+
+```bash
+ladb -s 123456F shell sleep 20
+```
+
+这样做之后，该设备将被标记为BUSY状态。此时你如果想操作它是被禁止的：
+
+```text
+ladb -s 123456F shell echo hello
+
+Traceback (most recent call last):
+  File "C:\Python37\Scripts\ladb-script.py", line 11, in <module>
+    load_entry_point('lockadb', 'console_scripts', 'ladb')()
+  File "f:\lockadb\lockadb\client.py", line 106, in main
+    LockAdbRunner.run(command)
+  File "f:\lockadb\lockadb\client.py", line 95, in run
+    with lock_device(device_id):
+  File "c:\python37\lib\contextlib.py", line 112, in __enter__
+    return next(self.gen)
+  File "f:\lockadb\lockadb\client.py", line 39, in lock_device
+    assert acquire_device(device_id), 'device {} is busy'.format(device_id)
+AssertionError: device 123456F is busy
+```
+
+### 主动锁定
+
+除了自动模式，你也可以手动给设备加锁，更加自由地管理设备。
+
+```bash
+# 上锁
+ladb acquire 123456F
+# 解锁
+ladb release 123456F
+```
+
+在你上锁之后，除了主动释放设备，该设备将一直保持在BUSY状态。
 
 ## 协议
 
